@@ -1,0 +1,10 @@
+.DS_Store
+.vscode
+
+docker/mysql/
+docker/nginx/
+docker/node/
+docker/php/
+mysql/data/
+.env*
+docker-compose.yml
