@@ -158,7 +158,7 @@ Laravel + React
     }
     ```
 
-5. 次に`TaskFactory.php`を基に`ダミーデータ`をデータベースへ挿入する際の詳細を定義する。<br>
+1. 次に`ダミーデータ`をデータベースへ挿入する際の件数を定義する。<br>
 `TaskSeeder.php`の`run()`メソッドに挿入するデータ数を定義。今回は10件作成する。
 
     <details>
@@ -200,8 +200,8 @@ Laravel + React
     }
     ```
 
-6. `php artisan db:seed`コマンドを実行することでデータベースに`ダミーデータ`が作成＆挿入される。<br>
-上記コマンド実行時に`TaskSeeder.php`の`run()`メソッドを参照するように`DatabaseSeeder.php`の`run()`メソッドに`TaskSeeder`クラスを追加する。
+6. `php artisan db:seed`コマンドを実行することでデータベースに`ダミーデータ`が作成される。<br>
+上記コマンド実行時に作成した`TaskSeeder.php`の`run()`メソッドを参照するように、`DatabaseSeeder.php`の`run()`メソッド内の`call()`メソッドに`TaskSeeder`クラスを**配列**で追加する。
 
     <details>
     <summary>[ <b>編集するファイル</b> ]</summary>
@@ -243,8 +243,8 @@ Laravel + React
     }
     ```
 
-7. 各種ファイルの編集・追記が完了したら次のコマンドを実行し、実際に`ダミーデータ`の挿入を行う。<br>
-その後、[**http://localhost:8080/**](http://localhost:8080/)にアクセスし`tasksテーブル`内に10件の`ダミーデータ`が挿入されていることを確認する。
+7. 各種ファイルの編集・追記が完了したら次のコマンドを実行し、実際に`ダミーデータ`の作成を行う。<br>
+その後、[**http://localhost:8080/**](http://localhost:8080/) にアクセスし`tasksテーブル`内に10件の`ダミーデータ`が挿入されていることを確認する。
     ```sh
     php artisan db:seed
 
@@ -260,7 +260,9 @@ Laravel + React
     | --- | --- | --- |
     | `id` | 1 ~ 10のユニークID | int型 |
     | `title` | 15 ~ 40文字のランダムな文字列 | string型 |
-    | `is_done` | 完了 or 未完了を判定する真偽値 (初期値は`false`, `0`) | boolean型 |
+    | `is_done` | 完了 or 未完了を判定する真偽値 (初期値は`0`=`False`, 10%の確率で`1`=`True`が含まれるように設定してある) | boolean型 |
     | `created_at` | 作成日時 | timestamp型 |
     | `updated_at` | 更新日時 | timestamp型 |
+
+    [Factory, Seeder, DatabaseSeederの詳細](https://chatgpt.com/c/67e20436-3334-8011-8f35-7e640c26989d)
 <!-- 1. データベースとダミーデータの作成 -->
