@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Task>
  */
 
-# ダミーデータ登録
+# ダミーデータのテンプレートを定義
 class TaskFactory extends Factory
 {
     /**

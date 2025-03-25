@@ -5,6 +5,8 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+
+# "php artisan db:seed" コマンド実行時にどの Seeder ファイルを参照するか定義する
 class DatabaseSeeder extends Seeder
 {
     /**

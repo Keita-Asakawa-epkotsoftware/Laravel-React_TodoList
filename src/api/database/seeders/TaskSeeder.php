@@ -7,7 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 
-# Factory に登録したダミーデータをデータベースへ作成
+# Factory ファイルに定義したダミーデータをデータベースへ挿入する際の詳細処理を定義
 class TaskSeeder extends Seeder
 {
     /**
