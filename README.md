@@ -22,7 +22,8 @@ Laravel + React
 ## 手順の流れ
 
 1. [**データベースとダミーデータの作成**](#1-データベースとダミーデータの作成)
-2. [****]()
+2. [**簡易APIの作成とテスト**](#2-簡易apiの作成とテスト)
+3. 
 <!-- 手順 -->
 
 <!-- 1. データベースとダミーデータの作成 -->
@@ -266,3 +267,50 @@ Laravel + React
 
     [Factory, Seeder, DatabaseSeederの詳細](https://chatgpt.com/c/67e20436-3334-8011-8f35-7e640c26989d)
 <!-- 1. データベースとダミーデータの作成 -->
+
+<!-- 2. 簡易APIの作成とテスト -->
+## 2. 簡易APIの作成とテスト
+
+1. 作成したダミーデータを取得する簡易的な`API`を作成。<br>
+`TaskController.php`の中身を編集。
+
+    <details>
+    <summary>[ <b>編集するファイル</b> ]</summary>
+
+    ```sh
+    # 以下のファイルを編集する
+    TodoApp/
+      ├── src/
+          ├── api/
+              ├── app/
+                  └── Http/
+                      └── Contorollers/
+                          └── TaskController.php  # <= 編集
+    ```
+    ---
+    </details>
+
+    ```php
+    # TaskController.php
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Http\Requests\StoreTaskRequest;
+    use App\Http\Requests\UpdateTaskRequest;
+    use App\Models\Task;
+
+    class TaskController extends Controller
+    {
+        public function index()
+        {
+            return Task::all();  # 追加
+        }
+        ...(略)
+    }
+    ```
+
+2. [**http://localhost/api/tasks**](http://localhost/api/tasks) にアクセスして、ダミーデータが全て(10件)取得できているか確認。
+
+3. 
+<!-- 2. 簡易APIの作成とテスト -->
