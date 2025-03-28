@@ -46,7 +46,7 @@ Laravel + React
     INFO  Policy [app/Policies/TaskPolicy.php] created successfully.
     ```
 
-2. 作成した`マイグレーションファイル`に、今回使用するテーブル構造(スキーマ)を定義。<br>
+1. 作成した`マイグレーションファイル`に、今回使用するテーブル構造(スキーマ)を定義。<br>
 `マイグレーションファイル`の`up()`メソッドに`title`カラムと`is_done`カラムを追加。
 
     <details>
@@ -98,7 +98,7 @@ Laravel + React
     };
     ```
 
-3. 上記の`マイグレーションファイル`を基にデータベースにテーブル構造(スキーマ)を反映させる。<br>
+1. 上記の`マイグレーションファイル`を基にデータベースにテーブル構造(スキーマ)を反映させる。<br>
 次のコマンドを実行し、[**http://localhost:8080/**](http://localhost:8080/) にアクセス。`tasksテーブル`の存在とテーブル内に`title`カラムと`is_done`カラムが追加されているか確認する。
     ```sh
     php artisan migrate
@@ -108,8 +108,8 @@ Laravel + React
     yyyy_MM_dd_hhmmss_create_tasks_table .... 28ms DONE
     ```
 
-4. データベースに挿入する`ダミーデータ`のテンプレートを定義する。<br>
-`TaskFactory.php`の`definition()`メソッドに作成する`ダミーデータ`を**連想配列**で定義する。
+1. データベースに挿入するダミーデータのテンプレートを定義する。<br>
+`TaskFactory.php`の`definition()`メソッドに作成するダミーデータを**連想配列**で定義する。
 
     <details>
     <summary>[ <b>編集するファイル</b> ]</summary>
@@ -159,7 +159,7 @@ Laravel + React
     }
     ```
 
-1. 次に`ダミーデータ`をデータベースへ挿入する際の件数を定義する。<br>
+1. 次にダミーデータをデータベースへ挿入する際の件数を定義する。<br>
 `TaskSeeder.php`の`run()`メソッドに挿入するデータ数を定義。今回は10件作成する。
 
     <details>
@@ -201,7 +201,7 @@ Laravel + React
     }
     ```
 
-6. `php artisan db:seed`コマンドを実行することでデータベースに`ダミーデータ`が作成される。<br>
+6. `php artisan db:seed`コマンドを実行することでデータベースにダミーデータが作成される。<br>
 上記コマンド実行時に作成した`TaskSeeder.php`の`run()`メソッドを参照するように、`DatabaseSeeder.php`の`run()`メソッド内の`call()`メソッドに`TaskSeeder`クラスを**配列**で追加する。
 
     <details>
@@ -244,8 +244,8 @@ Laravel + React
     }
     ```
 
-7. 各種ファイルの編集・追記が完了したら次のコマンドを実行し、実際に`ダミーデータ`の作成を行う。<br>
-その後、[**http://localhost:8080/**](http://localhost:8080/) にアクセスし`tasksテーブル`内に10件の`ダミーデータ`が挿入されていることを確認する。
+7. 各種ファイルの編集・追記が完了したら次のコマンドを実行し、実際にダミーデータの作成を行う。<br>
+その後、[**http://localhost:8080/**](http://localhost:8080/) にアクセスし`tasksテーブル`内に10件のダミーデータが挿入されていることを確認する。
     ```sh
     php artisan db:seed
 
@@ -255,7 +255,7 @@ Laravel + React
     Database\Seeders\TaskSeeder .... RUNNING
     Database\Seeders\TaskSeeder .... 111 ms DONE
     ```
-    - 作成された`ダミーデータ`の詳細
+    - 作成されたダミーデータの詳細
 
     | カラム名 | データ内容 | データ型 |
     | --- | --- | --- |
@@ -310,7 +310,136 @@ Laravel + React
     }
     ```
 
-2. [**http://localhost/api/tasks**](http://localhost/api/tasks) にアクセスして、ダミーデータが全て(10件)取得できているか確認。
+2. 作成した`API`が正常に動作するか、このタイミングで一度**テスト**を行う。<br>
+`database.php`にテスト用データベースへの接続設定に変更。`sqlite`の項目から`'database' =>`をコピーし内容を編集。
 
-3. 
+    <details>
+    <summary>[ <b>編集するファイル</b> ]</summary>
+
+    ```sh
+    # 以下のファイルを編集する
+    TodoApp/
+      ├── src/
+          ├── api/
+              ├── config/
+                  └── database.php  # <= 編集
+    ```
+    ---
+    </details>
+
+    ```php
+    # database.php
+    <?php
+
+    use Illuminate\Support\Str;
+
+    return [
+
+        'default' => env('DB_CONNECTION', 'mysql'),
+
+        'connections' => [
+
+            'sqlite' => [
+                'driver' => 'sqlite',
+                'url' => env('DATABASE_URL'),
+                // 'database' => env('DB_DATABASE', database_path('database.sqlite')),  # 下記内容を編集後、無効化
+                'database' => database_path(env('DB_DATABASE', 'database.sqlite')),     # 上記をコピーし編集
+                'prefix' => '',
+                'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            ],
+        ],
+    ]
+    ```
+
+1. `phpunit.xml`に以下の内容を追記。<br>
+・`DB_CONNECTION`を追加し、テスト用DBの`sqlite`を設定。<br>
+・`APP_ENV`のデフォルト設定が`testing`になっていることを確認。
+
+    <details>
+    <summary>[ <b>編集するファイル</b> ]</summary>
+
+    ```sh
+    # 以下のファイルを編集する
+    TodoApp/
+      ├── src/
+          ├── api/
+              └── phpunit.xml  # <= 編集
+    ```
+    ---
+    </details>
+
+    ```xml
+    # phpunit.xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+            bootstrap="vendor/autoload.php"
+            colors="true"
+    >
+        ...(略)
+        <php>
+            <env name="APP_ENV" value="testing"/>       # testing が設定されていることを確認
+            <env name="BCRYPT_ROUNDS" value="4"/>
+            <env name="CACHE_DRIVER" value="array"/>
+            <env name="DB_CONNECTION" value="sqlite"/>  # コメントアウトを解除し有効化
+            ...(略)
+        </php>
+    </phpunit>
+    ```
+
+    <details>
+    <summary>[ <b>< env name="APP_ENV" value="testing"/></b> の詳細 ]</summary>
+
+    - `APP_ENV`に`testing`を設定することで、`PHPUnit`のテスト時は`mysql_test`の接続設定を参照するようになる。
+    - `database.php`内の`env()`メソッドは本番用の`.env`ファイルではなく**テスト用の`.env.testing`ファイルの接続設定を参照**する。
+    - `PHPUnit`を使用したテスト実行時のみ適用される設定のため、**本番用DBには影響しない**。
+
+    ---
+    </details>
+
+1. 次に、`.env`ファイルをコピーし`.env.testing`ファイルを作成。
+    ```sh
+    cp .env .env.testing
+    ```
+
+    作成した`.env.testing`ファイルの中身を編集。DB接続設定以外は**不要**なので削除。
+    ```dotenv
+    # .env.testing
+
+    # テスト用DB接続設定
+    DB_CONNECTION=sqlite
+    DB_HOST="${DB_HOST}"
+    DB_PORT="${DB_PORT}"
+    DB_DATABASE=test.sqlite
+    DB_USERNAME="${DB_USERNAME}"
+    DB_PASSWORD="${DB_PASSWORD}"
+    ...(略)
+    ```
+
+5. 設定が完了したら、次のコマンドを実行しテスト用DBである`test.sqlite`を`database/`ディレクトリ内に作成。
+    ```sh
+    docker exec -it api touch ./database/test.sqlite
+    ```
+
+3. 次のコマンドを実行し、`.env.testing`ファイルの`APP_KEY=`にアプリケーションキーを生成する。
+    ```sh
+    docker exec -it api php artisan key:generate --env=testing
+
+    # --- 上記コマンドの実行例 ---
+    INFO  Application key set successfully.
+    ```
+
+    ```dotenv
+    # .env.testing
+
+    APP_KEY=base64:ここにランダムな文字列が生成される
+    ```
+
+4. `マイグレーション`を実行し、
+```sh
+docker exec -it api php artisan migrate --env=testing
+```
+
+[**http://localhost/api/tasks**](http://localhost/api/tasks) にアクセスして、ダミーデータが全て(10件)取得できているか確認。
+
 <!-- 2. 簡易APIの作成とテスト -->
